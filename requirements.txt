@@ -1,0 +1,6 @@
+discord==2.3.2
+spotipy== 2.25.2
+ytmusicapi==1.11.5
+networkx==3.6.1
+gravis==0.1.0
+importlib_resources==6.5.2

@@ -4,3 +4,4 @@ ytmusicapi==1.11.5
 networkx==3.6.1
 gravis==0.1.0
 importlib_resources==6.5.2
+pytest==9.0.2

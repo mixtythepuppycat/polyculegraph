@@ -27,24 +27,28 @@ class Polycule:
             self.G.graph['edge_label_size'] = 10
             self.G.graph['edge_label_color'] = 'blue'
 
-    def add_relationship(self, id: int, name: str, partnerId: int, partnerName: str, type: RelationshipType):
+    def add_relationship(self, id: int, partnerId: int, partnerName: str, type: RelationshipType):
         # Check to see if they were registered as an offserver node.
         # If the partner already exists
         
-        if self.G.has_node(id) is False:
+        if self.G.has_node(id) is False or self.G.nodes[id].get("claimed") is False:
             raise RegistrationError("Need to register")
-            #self.G.add_node(id, display_name=name, discord=True)
         if partnerId is None:
-            partnerId = (id, partnerName)
-            self.G.add_node(partnerId, display_name=partnerName, discord=False)
+            partnerId = partnerName
+            self.G.add_node(partnerId, display_name=partnerName, id_not_unique=True)
         elif self.G.has_node(partnerId) is False:
-            self.G.add_node(partnerId, display_name=partnerName)
+            self.G.add_node(partnerId, display_name=partnerName, claimed=False)
             
-        self.G.add_edge(id, partnerId, color=type.value, click=f"Relationship Type: {type.name}", size=5)
+        self.G.add_edge(id, partnerId, relationship=type.name, color=type.value, click=f"Relationship Type: {type.name}", size=5)
 
-    def get_relationships(self, member: int):
-        return self.G.adj[member]
+    def get_relationships(self, member: int) -> str:
+        response = "You have registered the following partners:\n"
 
+        for nbr, datadict in self.G.adj[member].items():
+            response += f"{self.G.nodes[nbr]['display_name']} ({datadict['relationship']})\n"
+        
+        return response
+    
     def remove_relationship(self, id: int, partnerId: str, discord: bool = True):
         if discord:
             self.G.remove_edge(id, partnerId)
@@ -56,8 +60,8 @@ class Polycule:
             if self.G.degree(partnerId) == 0:
                 self.G.remove_node(partnerId)
 
-    def register(self, userId: int, display_name: str, pronouns:str, type:str):
-        self.G.add_node(userId, display_name=display_name, click=f"Pronouns: {pronouns}<br/>Critter Type: {type}", discord=True)
+    def register(self, userId: int, display_name: str, pronouns:str = "", type:str = ""):
+        self.G.add_node(userId, display_name=display_name, click=f"Pronouns: {pronouns}<br/>Critter Type: {type}", claimed=True)
 
     def render_graph(self):
         nx.write_gml(self.G, f"{self.id}.gml")

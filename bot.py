@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from keys import BOT_TOKEN, CHANNEL_NAME
+from keys import BOT_TOKEN
 from logger import getLogger
 import polycule
 from polycule import Polycules, RegistrationError, RelationshipType
@@ -61,7 +61,7 @@ async def remove_offserver_partner(interaction: discord.Interaction, partner_nam
 )
 async def view_partners(interaction: discord.Interaction):
         partners = polycules.get(interaction.guild_id).get_relationships(interaction.user.id)
-        await interaction.response.send_message(f"You have registered the following partners {partners}", ephemeral=True)
+        await interaction.response.send_message(partners, ephemeral=True)
 
 @tree.command(
     description="View your polycule's graph",

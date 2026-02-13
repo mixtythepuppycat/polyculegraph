@@ -125,6 +125,23 @@ async def _register(interaction: discord.Interaction, preferred_name: str, prono
     polycules.get(interaction.guild_id).register(interaction.user.id, preferred_name, pronouns, critter_type)
     await interaction.response.send_message(f"✅ {preferred_name} been added to the polycule! ✅")
 
+@tree.command(description="Remove a person from the polycule graph")
+@app_commands.describe(person_discord="The person's Discord name who is being removed",
+                       person_name="The person's name who is being removed (only use if they aren't on this server)")
+@app_commands.checks.has_role(POLYCULE_ADMIN_ROLE)
+async def unregister(interaction: discord.Interaction, person_discord: discord.Member = None, person_name: str = None):
+    _unregister(interaction, person_discord, person_name)
+
+async def _unregister(interaction: discord.Interaction, person_discord: discord.Member = None, person_name: str = None):
+    if person_discord:
+        person_name = person_discord.id
+    
+    try:
+        polycules.get(interaction.guild_id).unregister(person_name)
+        await interaction.response.send_message(f"✅ {person_name} has been removed from the polycule! ✅")
+    except NodeNotFound as e:
+        await interaction.response.send_message(f"❌ ERROR: {e} ❌", ephemeral=True)
+
 
 @client.event
 async def on_ready():

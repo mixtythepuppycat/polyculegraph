@@ -68,18 +68,28 @@ class Polycule:
         
         return response
     
-    def remove_relationship(self, id: int, partnerId):
-            if not self.G.has_node(partnerId):
+    def remove_relationship(self, id, partnerId):
+            if not self.G.has_node(id):
+                raise NodeNotFound("User wasn't found")
+            elif not self.G.has_node(partnerId):
                 raise NodeNotFound("Partner wasn't found")
             
             self.G.remove_edge(id, partnerId)
 
-            # If this wasn't a unique user, remove them from the graph is they got no other links
+            # If either weren't unique users, remove them from the graph if they got no other links
+            if self.G.degree(id) == 0 and self.G.nodes[id]['unique_id'] is False:
+                self.unregister(id)
             if self.G.degree(partnerId) == 0 and self.G.nodes[partnerId]['unique_id'] is False:
-                self.G.remove_node(partnerId)
+                self.unregister(partnerId)
 
     def register(self, userId: int, display_name: str, pronouns:str = "", type:str = ""):
         self._add_node(userId, display_name, pronouns, type, claimed=True, force_update=True)
+
+    def unregister(self, userId):
+        if not self.G.has_node(userId):
+            raise NodeNotFound("User wasn't found")
+        
+        self.G.remove_node(userId)
 
     def render_graph(self):
         nx.write_gml(self.G, f"{self.id}.gml")

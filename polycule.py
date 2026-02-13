@@ -13,6 +13,9 @@ class RelationshipType(Enum):
 class RegistrationError(Exception):
     pass
 
+class NodeNotFound(Exception):
+    pass
+
 class Polycule:
     def __init__(self, id):
         self.id = id
@@ -27,19 +30,35 @@ class Polycule:
             self.G.graph['edge_label_size'] = 10
             self.G.graph['edge_label_color'] = 'blue'
 
-    def add_relationship(self, id: int, partnerId: int, partnerName: str, type: RelationshipType):
-        # Check to see if they were registered as an offserver node.
-        # If the partner already exists
-        
-        if self.G.has_node(id) is False or self.G.nodes[id].get("claimed") is False:
+    # For adding your own relationship
+    def add_self_relationship(self, self_id: int, partner_id: int, partner_name: str, type: RelationshipType):        
+        if self.G.has_node(self_id) is False or self.G.nodes[self_id].get("claimed") is False:
             raise RegistrationError("Need to register")
-        if partnerId is None:
-            partnerId = partnerName
-            self.G.add_node(partnerId, display_name=partnerName, id_not_unique=True)
-        elif self.G.has_node(partnerId) is False:
-            self.G.add_node(partnerId, display_name=partnerName, claimed=False)
-            
-        self.G.add_edge(id, partnerId, relationship=type.name, color=type.value, click=f"Relationship Type: {type.name}", size=5)
+        
+        # add the partner in case they don't exist yet
+        partner_id = self._add_node(partner_id, partner_name)
+
+        self._add_edge(self_id, partner_id, type)
+
+    # Intended for polycule admins, limit access when possible
+    def add_others_relationship(self, person1_id, person1_name: str, person2_id, person2_name: str, relationship_type: RelationshipType):
+        person1_id = self._add_node(person1_id, person1_name)
+        person2_id = self._add_node(person2_id, person2_name)
+        self._add_edge(person1_id, person2_id, relationship_type)
+
+    def _add_node(self, id: int, display_name: str, pronouns:str = "", type:str = "", claimed: bool = False, force_update: bool = False):
+        unique_id = True
+        if id is None:
+            id = display_name
+            unique_id = False
+
+        if not self.G.has_node(id) or force_update:
+            self.G.add_node(id, display_name=display_name, click=f"Pronouns: {pronouns}<br/>Critter Type: {type}", claimed=claimed, unique_id=unique_id)
+
+        return id
+
+    def _add_edge(self, person1_id, person2_id, type: RelationshipType):
+        self.G.add_edge(person1_id, person2_id, relationship=type.name, color=type.value, click=f"Relationship Type: {type.name}", size=5)
 
     def get_relationships(self, member: int) -> str:
         response = "You have registered the following partners:\n"
@@ -49,19 +68,18 @@ class Polycule:
         
         return response
     
-    def remove_relationship(self, id: int, partnerId: str, discord: bool = True):
-        if discord:
-            self.G.remove_edge(id, partnerId)
-        else:
-            partnerId = (id, partnerId)
+    def remove_relationship(self, id: int, partnerId):
+            if not self.G.has_node(partnerId):
+                raise NodeNotFound("Partner wasn't found")
+            
             self.G.remove_edge(id, partnerId)
 
-            # If this was the last link to the partner, remove them from the graph
-            if self.G.degree(partnerId) == 0:
+            # If this wasn't a unique user, remove them from the graph is they got no other links
+            if self.G.degree(partnerId) == 0 and self.G.nodes[partnerId]['unique_id'] is False:
                 self.G.remove_node(partnerId)
 
     def register(self, userId: int, display_name: str, pronouns:str = "", type:str = ""):
-        self.G.add_node(userId, display_name=display_name, click=f"Pronouns: {pronouns}<br/>Critter Type: {type}", claimed=True)
+        self._add_node(userId, display_name, pronouns, type, claimed=True, force_update=True)
 
     def render_graph(self):
         nx.write_gml(self.G, f"{self.id}.gml")

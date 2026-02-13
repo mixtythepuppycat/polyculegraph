@@ -1,9 +1,10 @@
+import asyncio
 import discord
 from discord import app_commands
 from keys import BOT_TOKEN
 from logger import getLogger
-import polycule
 from polycule import Polycules, RegistrationError, RelationshipType, NodeNotFound
+from aiohttp import web
 
 _log = getLogger(__name__)
 
@@ -110,8 +111,8 @@ async def view_partners(interaction: discord.Interaction):
 
 @tree.command(description="View your polycule's graph")
 async def view_polycule(interaction: discord.Interaction):
-        graph = polycules.get(interaction.guild_id).render_graph()
-        await interaction.response.send_message("HTML Done", ephemeral=True)
+        # TODO Update with dynamic host
+        await interaction.response.send_message(f"http://127.0.0.1:5000/polycule/{interaction.guild_id}", ephemeral=True)
 
 
 @tree.command(description="Register yourself with the polycule. Setup your preferred name, pronouns, and critter type")
@@ -142,13 +143,31 @@ async def _unregister(interaction: discord.Interaction, person_discord: discord.
     except NodeNotFound as e:
         await interaction.response.send_message(f"❌ ERROR: {e} ❌", ephemeral=True)
 
-
 @client.event
 async def on_ready():
     await tree.sync()
     print(f'We have logged in as {client.user}')
+
+async def handle(request):
+    guid = request.match_info.get('guid')
+    html = polycules.get(guid).render_graph_to_html()
+    return web.Response(body=html, content_type="text/html")
+
+async def run_web_server():
+    app = web.Application()
+    app.add_routes([web.get('/polycule/{guid}', handle)])
     
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, 'localhost', 5000)
+    await site.start()
+
+async def main():
+    await asyncio.gather(
+        client.start(BOT_TOKEN),
+        run_web_server()
+    )
 
 if __name__ == '__main__':
     _log.info("STARTING BOT")
-    client.run(BOT_TOKEN)
+    asyncio.run(main())

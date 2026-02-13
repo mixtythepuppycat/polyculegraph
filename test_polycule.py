@@ -74,7 +74,7 @@ def test_complex_polycule():
     cule.add_others_relationship(None, 'Vivienne', None, 'Jessie', RelationshipType.Partner)
     cule.add_others_relationship(None, 'Bell', None, 'Lydia', RelationshipType.FWB)
 
-    cule.render_graph()
+    cule.render_graph_to_file()
 
 userId1 = 1234
 userId2 = 4321

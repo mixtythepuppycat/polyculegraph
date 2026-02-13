@@ -91,12 +91,19 @@ class Polycule:
         
         self.G.remove_node(userId)
 
-    def render_graph(self):
+    def render_graph_to_file(self):
         nx.write_gml(self.G, f"{self.id}.gml")
         graph = gv.d3(data=self.G, graph_height=880, use_collision_force=True, zoom_factor=1.5, 
                     show_details=True, use_many_body_force=False, use_links_force=True,
                     links_force_strength=1, collision_force_strength=1, node_label_data_source="display_name")
         graph.export_html(f"{self.id}.html", overwrite=True)
+
+    def render_graph_to_html(self):
+        graph = gv.d3(data=self.G, graph_height=880, use_collision_force=True, zoom_factor=1.5, 
+            show_details=True, use_many_body_force=False, use_links_force=True,
+            links_force_strength=1, collision_force_strength=1, node_label_data_source="display_name")
+        
+        return graph.to_html_standalone()
 
 class Polycules:
     def __init__(self):

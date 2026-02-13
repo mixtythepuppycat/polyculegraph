@@ -1,6 +1,6 @@
 import discord
 from discord import app_commands
-from keys import BOT_TOKEN
+from keys import BOT_TOKEN, URL_HOST
 from logger import getLogger
 from polycule import Polycules, RegistrationError, RelationshipType, NodeNotFound
 
@@ -109,10 +109,9 @@ async def view_partners(interaction: discord.Interaction):
 
 @tree.command(description="View your polycule's graph")
 async def view_polycule(interaction: discord.Interaction):
-        # TODO Update with dynamic host
         # TODO Dynamic saves
         polycules.get(interaction.guild_id).render_graph_to_file()
-        await interaction.response.send_message(f"http://127.0.0.1:5000/polycule/{interaction.guild_id}", ephemeral=True)
+        await interaction.response.send_message(f"{URL_HOST}/polycule/{interaction.guild_id}", ephemeral=True)
 
 
 @tree.command(description="Register yourself with the polycule. Setup your preferred name, pronouns, and critter type")

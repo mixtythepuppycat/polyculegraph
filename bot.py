@@ -1,10 +1,8 @@
-import asyncio
 import discord
 from discord import app_commands
 from keys import BOT_TOKEN
 from logger import getLogger
 from polycule import Polycules, RegistrationError, RelationshipType, NodeNotFound
-from aiohttp import web
 
 _log = getLogger(__name__)
 
@@ -30,7 +28,7 @@ tree.on_error = on_tree_error
                        partner_name="Your partner's name (only use if they aren't on this server)",
                        relationship_type="What type of relationship is this?")
 async def add_partner(interaction: discord.Interaction, relationship_type: RelationshipType, partner: discord.Member = None, partner_name: str = None):
-    _add_partner(interaction, relationship_type, partner, partner_name)
+    await _add_partner(interaction, relationship_type, partner, partner_name)
 
 async def _add_partner(interaction: discord.Interaction, relationship_type: RelationshipType, partner: discord.Member = None, partner_name: str = None):
     if partner is not None and partner_name is not None:
@@ -58,7 +56,7 @@ async def _add_partner(interaction: discord.Interaction, relationship_type: Rela
 @app_commands.checks.has_role(POLYCULE_ADMIN_ROLE)
 async def add_relationship(interaction: discord.Interaction, relationship_type: RelationshipType, person1_discord: discord.Member = None, 
                            person1_name: str = None, person2_discord: discord.Member = None, person2_name: str = None):
-    _add_relationship(interaction, relationship_type, person1_discord, person1_name, person2_discord, person2_name)
+    await _add_relationship(interaction, relationship_type, person1_discord, person1_name, person2_discord, person2_name)
 
 async def _add_relationship(interaction: discord.Interaction, relationship_type: RelationshipType, person1_discord: discord.Member = None, 
                            person1_name: str = None, person2_discord: discord.Member = None, person2_name: str = None):
@@ -88,7 +86,7 @@ async def _add_relationship(interaction: discord.Interaction, relationship_type:
 @app_commands.describe(partner="Your former partner's Discord name",
                        partner_name="Your former partner's name (only use if they aren't on this server)")
 async def remove_partner(interaction: discord.Interaction, partner: discord.Member = None, partner_name: str = None):
-    _remove_partner(interaction, partner, partner_name)
+    await _remove_partner(interaction, partner, partner_name)
 
 async def _remove_partner(interaction: discord.Interaction, partner: discord.Member = None, partner_name: str = None):
     if partner is not None and partner_name is not None:
@@ -112,6 +110,8 @@ async def view_partners(interaction: discord.Interaction):
 @tree.command(description="View your polycule's graph")
 async def view_polycule(interaction: discord.Interaction):
         # TODO Update with dynamic host
+        # TODO Dynamic saves
+        polycules.get(interaction.guild_id).render_graph_to_file()
         await interaction.response.send_message(f"http://127.0.0.1:5000/polycule/{interaction.guild_id}", ephemeral=True)
 
 
@@ -120,7 +120,7 @@ async def view_polycule(interaction: discord.Interaction):
                        pronouns="Your pronouns",
                        critter_type="What type of critter are you? (Puppy, cat, fox, etc)")
 async def register(interaction: discord.Interaction, preferred_name: str, pronouns: str = None, critter_type: str = None):
-    _register(interaction, preferred_name, pronouns, critter_type)
+    await _register(interaction, preferred_name, pronouns, critter_type)
 
 async def _register(interaction: discord.Interaction, preferred_name: str, pronouns: str = None, critter_type: str = None):
     polycules.get(interaction.guild_id).register(interaction.user.id, preferred_name, pronouns, critter_type)
@@ -131,7 +131,7 @@ async def _register(interaction: discord.Interaction, preferred_name: str, prono
                        person_name="The person's name who is being removed (only use if they aren't on this server)")
 @app_commands.checks.has_role(POLYCULE_ADMIN_ROLE)
 async def unregister(interaction: discord.Interaction, person_discord: discord.Member = None, person_name: str = None):
-    _unregister(interaction, person_discord, person_name)
+    await _unregister(interaction, person_discord, person_name)
 
 async def _unregister(interaction: discord.Interaction, person_discord: discord.Member = None, person_name: str = None):
     if person_discord:
@@ -148,26 +148,6 @@ async def on_ready():
     await tree.sync()
     print(f'We have logged in as {client.user}')
 
-async def handle(request):
-    guid = request.match_info.get('guid')
-    html = polycules.get(guid).render_graph_to_html()
-    return web.Response(body=html, content_type="text/html")
-
-async def run_web_server():
-    app = web.Application()
-    app.add_routes([web.get('/polycule/{guid}', handle)])
-    
-    runner = web.AppRunner(app)
-    await runner.setup()
-    site = web.TCPSite(runner, 'localhost', 5000)
-    await site.start()
-
-async def main():
-    await asyncio.gather(
-        client.start(BOT_TOKEN),
-        run_web_server()
-    )
-
 if __name__ == '__main__':
     _log.info("STARTING BOT")
-    asyncio.run(main())
+    client.run(BOT_TOKEN)

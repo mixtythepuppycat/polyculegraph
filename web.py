@@ -1,6 +1,6 @@
 from flask import Flask, session, redirect, url_for, jsonify
 import redis
-from keys import DISCORD_API_BASE_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, WEB_APP_SECRET_KEY
+from keys import DISCORD_API_BASE_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY
 from polycule import Polycule
 from authlib.integrations.flask_client import OAuth
 from flask_session import Session
@@ -13,10 +13,15 @@ app.debug = True
 oauth = OAuth(app)
 app.secret_key = WEB_APP_SECRET_KEY
 
+redis_client = redis.Redis(
+    host=REDIS_HOST,
+    port=int(REDIS_PORT),
+)
+
 app.config['SESSION_TYPE'] = 'redis'
 app.config['SESSION_PERMANENT'] = False
 app.config['SESSION_USE_SIGNER'] = True
-app.config['SESSION_REDIS'] = redis.from_url('redis://127.0.0.1:6379')
+app.config['SESSION_REDIS'] = redis_client
 
 server_session = Session(app)
 

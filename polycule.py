@@ -91,6 +91,9 @@ class Polycule:
         
         self.G.remove_node(userId)
 
+    def is_user_registered(self, userId: int) -> bool:
+        return self.G.has_node(userId) and self.G.nodes[userId].get("claimed")
+
     def save(self):
         nx.write_gml(self.G, f"{self.id}.gml")
 

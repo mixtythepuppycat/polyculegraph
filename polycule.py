@@ -91,6 +91,9 @@ class Polycule:
         
         self.G.remove_node(userId)
 
+    def save(self):
+        nx.write_gml(self.G, f"{self.id}.gml")
+
     def render_graph_to_file(self):
         nx.write_gml(self.G, f"{self.id}.gml")
         graph = gv.d3(data=self.G, graph_height=880, use_collision_force=True, zoom_factor=1.5, 

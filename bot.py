@@ -42,8 +42,6 @@ async def _add_partner(interaction: discord.Interaction, relationship_type: Rela
             else:
                 polycules.get(interaction.guild_id).add_self_relationship(interaction.user.id, None, partner_name, relationship_type)
                 
-                # TODO Is there a better way to persist the graph to disk?
-                polycules.get(interaction.guild_id).save()
             await interaction.response.send_message(f"✅ I added {partner} as your partner! ✅")
         except RegistrationError:
             await interaction.response.send_message("❌ ERROR: Please use /register before adding a partner ❌", ephemeral=True)
@@ -83,8 +81,6 @@ async def _add_relationship(interaction: discord.Interaction, relationship_type:
 
         polycules.get(interaction.guild_id).add_others_relationship(person1_id, person1_name, person2_id, person2_name, relationship_type)
 
-        # TODO Is there a better way to persist the graph to disk?
-        polycules.get(interaction.guild_id).save()
         await interaction.response.send_message(f"✅ {person1_name}'s relationship with {person2_name} has been registered! ✅")
 
 @tree.command(description="Remove a partner")
@@ -102,8 +98,6 @@ async def _remove_partner(interaction: discord.Interaction, partner: discord.Mem
                 partner_name = partner.id
             polycules.get(interaction.guild_id).remove_relationship(interaction.user.id, partner_name)
 
-            # TODO Is there a better way to persist the graph to disk?
-            polycules.get(interaction.guild_id).save()
             await interaction.response.send_message(f"✅ I removed {partner} as your partner", ephemeral=True)
         except NodeNotFound as e:
             await interaction.response.send_message(f"❌ ERROR: {e} ❌", ephemeral=True)
@@ -129,8 +123,6 @@ async def register(interaction: discord.Interaction, preferred_name: str, pronou
 async def _register(interaction: discord.Interaction, preferred_name: str, pronouns: str = None, critter_type: str = None):
     polycules.get(interaction.guild_id).register(interaction.user.id, preferred_name, pronouns, critter_type)
 
-    # TODO Is there a better way to persist the graph to disk?
-    polycules.get(interaction.guild_id).save()
     await interaction.response.send_message(f"✅ {preferred_name} been added to the polycule! ✅")
 
 @tree.command(description="Remove a person from the polycule graph")
@@ -146,8 +138,6 @@ async def _unregister(interaction: discord.Interaction, person_discord: discord.
     try:
         polycules.get(interaction.guild_id).unregister(person_name)
 
-        # TODO Is there a better way to persist the graph to disk?
-        polycules.get(interaction.guild_id).save()
         await interaction.response.send_message(f"✅ {person_name} has been removed from the polycule! ✅")
     except NodeNotFound as e:
         await interaction.response.send_message(f"❌ ERROR: {e} ❌", ephemeral=True)

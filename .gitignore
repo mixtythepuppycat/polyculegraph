@@ -209,3 +209,4 @@ __marimo__/
 docker-config.ini
 *.html
 *.gml
+_sample_graph.py

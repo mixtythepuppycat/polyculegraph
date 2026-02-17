@@ -1,3 +1,4 @@
 *.html
 .env
 docker-config.ini
+_sample_graph.py

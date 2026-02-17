@@ -7,11 +7,14 @@ from callee import Contains
 @pytest.fixture
 def mock_interaction() -> Mock:
     interaction = AsyncMock()
+    interaction.user.id = 123456789
     return interaction
 
 @pytest.fixture
 def mock_member() -> Mock:
     member = Mock()
+    member.id = 987654321
+    member.display_name = "user2"
     return member
 
 class any_string_with(str):

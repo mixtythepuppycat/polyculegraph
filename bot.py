@@ -54,11 +54,11 @@ async def _add_partner(interaction: discord.Interaction, relationship_type: Rela
                        person2_name="The second person's name (only use if they aren't on this server and not in combination with person2_discord)",
                        relationship_type="What type of relationship is this?")
 @app_commands.checks.has_role(POLYCULE_ADMIN_ROLE)
-async def add_relationship(interaction: discord.Interaction, relationship_type: RelationshipType, person1_discord: discord.Member = None, 
+async def add_others_relationship(interaction: discord.Interaction, relationship_type: RelationshipType, person1_discord: discord.Member = None, 
                            person1_name: str = None, person2_discord: discord.Member = None, person2_name: str = None):
-    await _add_relationship(interaction, relationship_type, person1_discord, person1_name, person2_discord, person2_name)
+    await _add_others_relationship(interaction, relationship_type, person1_discord, person1_name, person2_discord, person2_name)
 
-async def _add_relationship(interaction: discord.Interaction, relationship_type: RelationshipType, person1_discord: discord.Member = None, 
+async def _add_others_relationship(interaction: discord.Interaction, relationship_type: RelationshipType, person1_discord: discord.Member = None, 
                            person1_name: str = None, person2_discord: discord.Member = None, person2_name: str = None):
     if person1_discord is not None and person1_name is not None:
         await interaction.response.send_message("❌ ERROR: Please use either person1_discord or person1_name and not both ❌", ephemeral=True)
@@ -110,7 +110,7 @@ async def view_partners(interaction: discord.Interaction):
 
 @tree.command(description="View your polycule's graph")
 async def view_polycule(interaction: discord.Interaction):
-    await interaction.response.send_message(f"{URL_HOST}/polycule/{interaction.guild_id}", ephemeral=True)
+    await interaction.response.send_message(f"{URL_HOST}", ephemeral=True)
 
 
 @tree.command(description="Register yourself with the polycule. Setup your preferred name, pronouns, and critter type")

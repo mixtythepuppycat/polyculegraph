@@ -55,23 +55,23 @@ async def test_add_partner(mock_interaction, mock_member):
 
 @pytest.mark.asyncio
 async def test_add_relationship(mock_interaction, mock_member):    
-    await bot._add_relationship(mock_interaction, RelationshipType.Dating, person1_discord=mock_member, person2_discord=mock_member)
+    await bot._add_others_relationship(mock_interaction, RelationshipType.Dating, person1_discord=mock_member, person2_discord=mock_member)
     mock_interaction.response.send_message.assert_awaited_once_with(Contains(SUCCESS_MSG))
 
 @pytest.mark.asyncio
 async def test_add_relationship_with_missing_parameters(mock_interaction, mock_member):    
-    await bot._add_relationship(mock_interaction, RelationshipType.Dating)
+    await bot._add_others_relationship(mock_interaction, RelationshipType.Dating)
     mock_interaction.response.send_message.assert_awaited_once_with(Contains(ERROR_MSG), ephemeral=True)
 
 @pytest.mark.asyncio
 async def test_add_relationship_with_too_parameters(mock_interaction, mock_member):    
-    await bot._add_relationship(mock_interaction, RelationshipType.Dating, person1_discord=mock_member, 
+    await bot._add_others_relationship(mock_interaction, RelationshipType.Dating, person1_discord=mock_member, 
                                 person1_name="Test User 1", person2_discord=mock_member, person2_name="Test User 2")
     mock_interaction.response.send_message.assert_awaited_once_with(Contains(ERROR_MSG), ephemeral=True)
 
 @pytest.mark.asyncio
 async def test_add_relationship_with_wrong_parameter_set(mock_interaction, mock_member):    
-    await bot._add_relationship(mock_interaction, RelationshipType.Dating, person1_discord=mock_member, 
+    await bot._add_others_relationship(mock_interaction, RelationshipType.Dating, person1_discord=mock_member, 
                                 person1_name="Test User 1")
     mock_interaction.response.send_message.assert_awaited_once_with(Contains(ERROR_MSG), ephemeral=True)
 

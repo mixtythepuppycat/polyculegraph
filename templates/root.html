@@ -1,0 +1,19 @@
+<!-- root.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Select your server</h1>
+    <div class="servers">
+    {% for guild in guilds %}
+    
+        <div class="server">
+            <a class="link_container" href="{{ url_for('.polycule', guid=guild['id']) }}">
+            <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="discord_icon">
+            <div>{{ guild['name'] }}</div>
+            </a>
+        </div>
+    
+     {% endfor %}
+     </div>
+{% endblock %}

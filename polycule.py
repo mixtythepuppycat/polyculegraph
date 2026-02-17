@@ -124,7 +124,7 @@ class Polycule:
             show_details=True, use_many_body_force=False, use_links_force=True,
             links_force_strength=1, collision_force_strength=1, node_label_data_source="display_name")
         
-        return graph.to_html_standalone()
+        return graph.to_html_partial()
 
 class Polycules:
     def __init__(self):

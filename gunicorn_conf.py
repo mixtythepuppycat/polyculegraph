@@ -1,5 +1,3 @@
-from web import migrate
-
 # Gunicorn config variables, based on https://hub.docker.com/r/tiangolo/uwsgi-nginx-flask/
 loglevel = "info"
 errorlog = "-"  # stderr
@@ -10,7 +8,3 @@ timeout = 120
 keepalive = 5
 threads = 3
 preload_app = True
-
-def on_starting(server):
-    """Executes code before the master process is initialized"""
-    migrate()

@@ -2,7 +2,7 @@ from functools import wraps
 import os
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 import redis
-from keys import DISCORD_API_BASE_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY
+from keys import DISCORD_API_BASE_URL, DATA_FOLDER, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY
 from polycule import Polycule
 from authlib.integrations.flask_client import OAuth
 from flask_session import Session
@@ -76,14 +76,13 @@ def root():
     found_guilds = []
     guilds = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me/guilds').json()
     for guild in guilds:
-        if(os.path.exists(f"{guild["id"]}.gml")):
+        id = guild["id"]
+        if(os.path.exists(f"{DATA_FOLDER}/{id}.gml")):
             found_guilds.append(guild)
 
     return render_template("root.html", 
                            title="Polycule Graph",
                            guilds=found_guilds)
-
-
 
 @app.route('/login')
 def login():
@@ -147,9 +146,6 @@ def polycule(guid):
                                name=guild_name)
     else:
         return "Unauthorized access", 401
-
-def migrate():
-    pass
 
 if __name__ == '__main__':
     app.run()

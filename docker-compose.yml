@@ -4,23 +4,34 @@ services:
   webapp:
     env_file: ".env"
     build: .
-    ports:
-      - 5000:5000
+    volumes:
+      - graph-data:/usr/src/app/graph_data
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - DATA_FOLDER=/usr/src/app/graph_data
     depends_on:
       redis:
         condition: service_healthy
     restart: unless-stopped
     networks:
-      - app-network
+      - backend
   redis:
     image: "redis:8.6"
     container_name: redis
+    volumes:
+      - redis-data:/data
     networks:
-      - app-network
+      - backend
     restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -28,5 +39,11 @@ services:
       retries: 5
 
 networks:
-  app-network:
+  backend:
     driver: bridge
+
+volumes:
+  graph-data:
+    driver: local
+  redis-data:
+    driver: local

@@ -3,6 +3,8 @@ import networkx as nx
 import gravis as gv
 import os
 
+from keys import DATA_FOLDER
+
 class RelationshipType(Enum):
     Partner = "red"
     Dating = "yellow"
@@ -19,8 +21,8 @@ class NodeNotFound(Exception):
 class Polycule:
     def __init__(self, id):
         self.id = id
-        if os.path.isfile(f"{self.id}.gml"):
-            self.G = nx.read_gml(f"{self.id}.gml", destringizer=int)
+        if os.path.isfile(f"{DATA_FOLDER}/{self.id}.gml"):
+            self.G = nx.read_gml(f"{DATA_FOLDER}/{self.id}.gml", destringizer=int)
         else:
             self.G = nx.Graph()
 
@@ -110,7 +112,7 @@ class Polycule:
         return self.G.has_node(userId) and self.G.nodes[userId].get("claimed")
 
     def save(self):
-        nx.write_gml(self.G, f"{self.id}.gml")
+        nx.write_gml(self.G, f"{DATA_FOLDER}/{self.id}.gml")
 
     def render_graph_to_file(self):
         self.save()

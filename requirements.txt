@@ -1,6 +1,4 @@
 discord==2.3.2
-spotipy== 2.25.2
-ytmusicapi==1.11.5
 networkx==3.6.1
 gravis==0.1.0
 importlib_resources==6.5.2
@@ -11,3 +9,4 @@ Flask==3.1.2
 Authlib==1.6.8
 Flask-Session==0.8.0
 redis==7.1.1
+requests==2.32.5

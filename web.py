@@ -146,6 +146,10 @@ def polycule(guid):
                                name=guild_name)
     else:
         return "Unauthorized access", 401
+    
+@app.route("/getting-started")
+def getting_started():
+    return render_template("getting-started.html")
 
 if __name__ == '__main__':
     app.run()

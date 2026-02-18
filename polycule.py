@@ -139,3 +139,12 @@ class Polycules:
             self.store[polyculeId] = polycule
         
         return polycule
+    
+    def is_user_in_polycules(self, userId, polyculeIds):
+        users_polycules = []
+
+        for id in polyculeIds:
+            if os.path.exists(f"{DATA_FOLDER}/{id}.gml") and Polycule(id).is_user_registered(userId):
+                users_polycules.append(id)
+
+        return users_polycules

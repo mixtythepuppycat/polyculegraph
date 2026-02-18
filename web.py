@@ -1,9 +1,7 @@
-from functools import wraps
-import os
-from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+from flask import Flask, render_template, session, redirect, url_for
 import redis
-from keys import DISCORD_API_BASE_URL, DATA_FOLDER, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY
-from polycule import Polycule
+from keys import DISCORD_API_BASE_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY
+from polycule import Polycule, Polycules
 from authlib.integrations.flask_client import OAuth
 from flask_session import Session
 
@@ -73,12 +71,15 @@ def root():
     if not_logged_in('/'):
         return redirect(url_for('.login'))
     
-    found_guilds = []
     guilds = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me/guilds').json()
-    for guild in guilds:
-        id = guild["id"]
-        if(os.path.exists(f"{DATA_FOLDER}/{id}.gml")):
-            found_guilds.append(guild)
+
+    # cache their registered polycules in the session
+    if not session.get("userPolycules"):
+        user = int(session.get('user'))
+        session['userPolycules'] = Polycules().is_user_in_polycules(user, [guild["id"] for guild in guilds])
+
+    user_polycules = session['userPolycules']
+    found_guilds = [guild for guild in guilds if guild['id'] in user_polycules]
 
     return render_template("root.html", 
                            title="Polycule Graph",
@@ -102,54 +103,12 @@ def auth():
 @app.route('/logout')
 def logout():
     session.pop('user', None)
+    session.pop('userPolycules', None)
     return redirect('/')
-
-@app.route('/guild')
-def guild():
-    if not_logged_in(url_for('.guild')):
-        return redirect(url_for('.login'))
-
-    guilds = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me/guilds').json()
-    guild_id = "1409568706740224143"
-    result = [x for x in guilds if x["id"] == guild_id]
-    hash = result[0].get("icon")
-    guild_name = result[0].get("name")
-    icon_url = f"https://cdn.discordapp.com/icons/{guild_id}/{hash}.png"
-    
-    return jsonify(icon_url=icon_url, guild_name=guild_name, guilds=guilds)
-
-@app.route('/me')
-def me():
-    if not_logged_in(url_for('.me')):
-        return redirect(url_for('.login'))
-
-    user = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me').json()
-    return jsonify(user=user)
-
-@app.route("/polycule/<guid>")
-def polycule(guid):
-    if not_logged_in(url_for('.polycule', guid=guid)):
-        return redirect(url_for('.login'))
-
-    guilds = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me/guilds').json()
-    result = [x for x in guilds if x["id"] == guid]
-    hash = result[0].get("icon")
-    guild_name = result[0].get("name")
-    icon_url = f"https://cdn.discordapp.com/icons/{guid}/{hash}.png"
-
-    user = int(session.get('user'))
-    cule = Polycule(guid)
-    if cule.is_user_registered(user):
-        return render_template("polycule.html", 
-                               graph=Polycule(guid).render_graph_to_html(),
-                               icon=icon_url,
-                               name=guild_name)
-    else:
-        return "Unauthorized access", 401
     
 @app.route("/graph/<guid>")
 def graph(guid):
-    if not_logged_in(url_for('.polycule', guid=guid)):
+    if not_logged_in(url_for('.graph', guid=guid)):
         return redirect(url_for('.login'))
 
     user = int(session.get('user'))

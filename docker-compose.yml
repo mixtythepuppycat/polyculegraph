@@ -4,6 +4,8 @@ services:
   webapp:
     env_file: ".env"
     build: .
+    ports:
+      - 5000:5000
     volumes:
       - graph-data:/usr/src/app/graph_data
     environment:

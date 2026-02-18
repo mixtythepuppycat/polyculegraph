@@ -3,17 +3,31 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Select your server</h1>
-    <div class="servers">
-    {% for guild in guilds %}
-    
-        <div class="server">
-            <a class="link_container" href="{{ url_for('.polycule', guid=guild['id']) }}">
-            <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="discord_icon">
-            <div>{{ guild['name'] }}</div>
-            </a>
+    <div class="topbar">
+        <div class="dropdown">
+            <button onclick="myFunction()" id="dropbtn" class="dropbtn">Select your server</button>
+            <div id="myDropdown" class="dropdown-content">
+                {% for guild in guilds %}
+                
+
+                    <div class="graph_link" onclick="selectedOption(this, '{{ url_for('.graph', guid=guild['id']) }}')">
+                        <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="discord_icon"> 
+                        {{ guild['name'] }} 
+                    </div>
+                
+                {% endfor %}
+            </div>
         </div>
-    
-     {% endfor %}
-     </div>
+        <div class="nav">
+            <div class="title">Polycule Graph</div>
+            <div class="links">
+                <a href="{{ url_for('.getting_started') }}">Help</a>
+            </div>
+        </div>
+    </div>
+
+
+    <br>
+    <iframe id="graph_view" ></iframe>
 {% endblock %}
+

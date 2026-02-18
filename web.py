@@ -147,6 +147,18 @@ def polycule(guid):
     else:
         return "Unauthorized access", 401
     
+@app.route("/graph/<guid>")
+def graph(guid):
+    if not_logged_in(url_for('.polycule', guid=guid)):
+        return redirect(url_for('.login'))
+
+    user = int(session.get('user'))
+    cule = Polycule(guid)
+    if cule.is_user_registered(user):
+        return Polycule(guid).render_graph_to_html()
+    else:
+        return "Unauthorized access", 401
+    
 @app.route("/getting-started")
 def getting_started():
     return render_template("getting-started.html")

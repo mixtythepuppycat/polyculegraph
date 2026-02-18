@@ -1,13 +1,17 @@
+import os
 from unittest.mock import Mock, AsyncMock
 import pytest
 import bot
-from polycule import RelationshipType
+from keys import DATA_FOLDER
+from polycule import Polycules, RelationshipType
 from callee import Contains
 
 @pytest.fixture
 def mock_interaction() -> Mock:
     interaction = AsyncMock()
+    interaction.guild_id = 5555555
     interaction.user.id = 123456789
+
     return interaction
 
 @pytest.fixture
@@ -16,6 +20,15 @@ def mock_member() -> Mock:
     member.id = 987654321
     member.display_name = "user2"
     return member
+
+@pytest.fixture(autouse=True)
+def cleanup():
+    yield
+    # Remove the temporary file after the test
+    if os.path.exists(f"{DATA_FOLDER}/5555555.gml"):
+        os.remove(f"{DATA_FOLDER}/5555555.gml")
+    # Clear the bot's cache
+    bot.polycules = Polycules()
 
 class any_string_with(str):
     def __eq__(self, other):

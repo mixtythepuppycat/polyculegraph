@@ -1,3 +1,4 @@
+from keys import DATA_FOLDER
 from polycule import Polycule, RegistrationError, RelationshipType
 import os
 import pytest
@@ -7,8 +8,9 @@ def cule():
     cule = Polycule(12345678)
     yield cule
     # Remove the temporary file after the test
-    if os.path.exists("12345678.gml"):
-        os.remove("12345678.gml")
+    
+    if os.path.exists(f"{DATA_FOLDER}/12345678.gml"):
+        os.remove(f"{DATA_FOLDER}/12345678.gml")
 
 def test_complex_polycule(cule):
     cule.register(478931855585559369, "Mixty", "She/They", "Puppycat")
@@ -74,7 +76,7 @@ def test_complex_polycule(cule):
     cule.add_others_relationship(None, 'Vi', None, 'Tessie', RelationshipType.Partner)
     cule.add_others_relationship(None, 'Ring', None, 'Bettlejuice', RelationshipType.FWB)
 
-    cule.render_graph_to_file()
+    cule.save()
 
     # See if we did anything to corrupt the on disk file by loading it again
     cule = Polycule(12345678)

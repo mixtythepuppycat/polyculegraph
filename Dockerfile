@@ -3,8 +3,8 @@ FROM node:24-slim AS tailwind
 WORKDIR /usr/src
 RUN npm install tailwindcss @tailwindcss/cli flowbite
 
-COPY /static/css/styles.css .
-RUN npx @tailwindcss/cli -i /usr/src/styles.css -o /usr/src/output.css -m
+COPY . .
+RUN npx @tailwindcss/cli -i /usr/src/static/css/styles.css -o /usr/src/output.css -m
 
 FROM python:3.11
 

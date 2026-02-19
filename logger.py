@@ -3,6 +3,7 @@ import sys
 import os
 from typing import Any
 
+
 def getLogger(name):
     level = logging.INFO
     handler = logging.StreamHandler()
@@ -21,6 +22,7 @@ def getLogger(name):
 
     return logger
 
+
 def stream_supports_colour(stream: Any) -> bool:
     is_a_tty = hasattr(stream, 'isatty') and stream.isatty()
 
@@ -35,6 +37,7 @@ def stream_supports_colour(stream: Any) -> bool:
     # ANSICON checks for things like ConEmu
     # WT_SESSION checks if this is Windows Terminal
     return is_a_tty and ('ANSICON' in os.environ or 'WT_SESSION' in os.environ)
+
 
 def is_docker() -> bool:
     path = '/proc/self/cgroup'

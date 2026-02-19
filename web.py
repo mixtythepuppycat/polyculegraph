@@ -33,6 +33,7 @@ def set_token(token):
     session['refresh_token'] = token.get('refresh_token')
     session['expires_at'] = token.get('expires_at')
 
+
 def fetch_token():
     return dict(
         access_token=session.get('access_token'),
@@ -40,6 +41,7 @@ def fetch_token():
         refresh_token=session.get('refresh_token'),
         expires_at=session.get('expires_at')
     )
+
 
 def update_token(name, token, refresh_token=None, access_token=None):
     session['access_token'] = token.get('access_token')
@@ -59,6 +61,7 @@ oauth.register(
     client_kwargs={'scope': 'identify guilds'}
 )
 
+
 def not_logged_in(current_url):
     if not session.get('user'):
         session['next_url'] = current_url
@@ -66,11 +69,12 @@ def not_logged_in(current_url):
     else:
         return False
 
+
 @app.route('/')
 def root():
     if not_logged_in('/'):
         return redirect(url_for('.login'))
-    
+
     guilds = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me/guilds').json()
 
     # cache their registered polycules in the session
@@ -81,14 +85,16 @@ def root():
     user_polycules = session['userPolycules']
     found_guilds = [guild for guild in guilds if guild['id'] in user_polycules]
 
-    return render_template("root.html", 
+    return render_template("root.html",
                            title="Polycule Graph",
                            guilds=found_guilds)
+
 
 @app.route('/login')
 def login():
     redirect_uri = url_for('auth', _external=True)
     return oauth.discord.authorize_redirect(redirect_uri)
+
 
 @app.route('/callback')
 def auth():
@@ -100,12 +106,14 @@ def auth():
 
     return redirect(next_url)
 
+
 @app.route('/logout')
 def logout():
     session.pop('user', None)
     session.pop('userPolycules', None)
     return redirect('/')
-    
+
+
 @app.route("/graph/<guid>")
 def graph(guid):
     if not_logged_in(url_for('.graph', guid=guid)):
@@ -117,10 +125,12 @@ def graph(guid):
         return Polycule(guid).render_graph_to_html()
     else:
         return "Unauthorized access", 401
-    
+
+
 @app.route("/getting-started")
 def getting_started():
     return render_template("getting-started.html")
+
 
 if __name__ == '__main__':
     app.run()

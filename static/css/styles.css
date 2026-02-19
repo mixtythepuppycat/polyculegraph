@@ -11,16 +11,6 @@
     padding-bottom: 10px;
 }
 
-.container {
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-
-/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-.show {
-    display:block;
-}
-
 .discordLogin {
     transition: all ease 0.25s;
     &:hover {

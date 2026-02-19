@@ -210,3 +210,4 @@ docker-config.ini
 *.gml
 _sample_graph.py
 node_modules
+static/css/output.css

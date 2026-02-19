@@ -1,0 +1,95 @@
+<!-- getting-started.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav  class=" dark:bg-gray-900  dark:text-white">
+        <div class="flex flex-wrap items-center justify-between mx-auto p-4">
+            <span class="self-center text-xl font-semibold whitespace-nowrap font-extrabold">Polycule Graph v{{ version }}</span>
+
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-base md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 text-gray-400">
+                    <li>
+                    <a href="https://ko-fi.com/mixty" class="block py-2 px-3 rounded  md:hover:bg-transparent md:border-0 md:hover:text-gray-500 md:p-0 md:dark:hover:bg-transparent">Donate</a>
+                    </li>
+                    <li>
+                    <a href="{{ url_for('.index') }}" class="block py-2 px-3 rounded  md:hover:bg-transparent md:border-0 md:hover:text-gray-500 md:p-0 md:dark:hover:bg-transparent">Home</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<section class="bg-white dark:bg-gray-900">
+  <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+      <h2 class="mb-8 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white">FAQs</h2>
+      <div class="grid pt-8 text-left border-t border-gray-200 md:gap-16 dark:border-gray-700 md:grid-cols-2">
+          <div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How do I get started?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">
+                    Your Discord server will need the Polycule Graph Bot already on it. If it doesn't contact your Discord admin. If you are the admin, <a href="https://discord.com/oauth2/authorize?client_id=1473476039211618445&permissions=2048&integration_type=0&scope=bot" class="font-medium underline text-primary-600 dark:text-primary-500 hover:no-underline">click here to install</a></p>
+              </div>
+              <div class="mb-10">                        
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How do I add myself to the graph?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">Use the /register command in Discord. You can use tab to bring up more options like pronouns. <img class="help_img" src="{{ url_for('static', filename = 'img/register.png') }}"></p>
+              </div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How do I add a partner?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">You can use the /add_partner command in Discord. If your partner is on the Discord, use the partner parameter like so: </p>
+                  <img class="help_img" src="{{ url_for('static', filename = 'img/add_partner_discord.png') }}">
+              </div>
+
+          </div>
+          <div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      What if my partner is not on the Discord?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">You can still use the /add_partner command but instead of using the partner parameter, you'll use the partner_name parameter like so:</p>
+                  <img class="help_img" src="{{ url_for('static', filename = 'img/add_partner_off_discord.png') }}">
+              </div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How do I update my information (pronouns, etc) or existing relationship?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">You can run the previous commands again with the updated information.</p>
+              </div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How do I remove a relationship?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">You can use the /remove_partner command in Discord. Use either the partner or partner_name parameter in the same way you used /add_partner </p>
+              </div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How do I remove myself from the graph?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">You can use the /unregister command in Discord.</p>
+              </div>
+              <div class="mb-10">
+                  <h3 class="flex items-center mb-4 text-lg font-medium text-gray-900 dark:text-white">
+                      <svg class="flex-shrink-0 mr-2 w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+                      How can I add/modify relationships which I'm now a part of?
+                  </h3>
+                  <p class="text-gray-500 dark:text-gray-400">Your Discord admin will have to grant you the Polygrapher. Once you have that, you can use the /add_others_relationship command in Discord.</p>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+{% endblock %}

@@ -4,22 +4,24 @@
 
 {% block content %}
     <nav class="bg-neutral-primary border-default">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="flex flex-wrap items-center justify-between mx-auto p-4">
             <span class="self-center text-xl text-heading font-semibold whitespace-nowrap">Polycule Graph v{{ version }}</span>
 
             {% if logged_in %}
 
-            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdownOptions" class="inline-flex items-center justify-center text-white bg-[#5865F2] box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" type="button">
-                <span id="dropdownMenuRootText">Select your server</span>
+            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdownOptions" class="inline-flex w-60 items-center justify-center text-white bg-[#5865F2] box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none" type="button">
+                <span id="dropdownMenuRootText" class="inline-flex items-center w-full justify-center">
+                    <i class="fa-brands fa-discord align-middle fa-2x p-2"></i>
+                    Select your server</span>
                 <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
             </button>
 
-            <div id="dropdownOptions" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+            <div id="dropdownOptions" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-60">
                 <ul class="h-48 p-2 text-sm text-body font-medium overflow-y-auto" aria-labelledby="dropdownDefaultButton">
                     {% for guild in guilds %}
                         <li>
                             <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" onclick="selectedOption(this, '{{ url_for('.graph', guid=guild['id']) }}')">
-                                <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="rounded-2xl w-12 mr-2.5"> 
+                                <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="rounded-2xl w-10 mr-2.5"> 
                                 {{ guild['name'] }} 
                             </a>
                         </li>
@@ -51,7 +53,7 @@
                     <a href="https://ko-fi.com/mixty" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Donate</a>
                     </li>
                     <li>
-                    <a href="{{ url_for('.getting_started') }}" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Help</a>
+                    <a href="{{ url_for('.help') }}" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Help</a>
                     </li>
                     <li>
                     <a href="{{ url_for('.logout') }}" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Logout</a>

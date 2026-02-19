@@ -135,9 +135,9 @@ def graph(guid):
         return "Unauthorized access", 401
 
 
-@app.route("/getting-started")
-def getting_started():
-    return render_template("getting-started.html")
+@app.route("/help")
+def help():
+    return render_template("help.html", version=APP_VERSION)
 
 
 if __name__ == '__main__':

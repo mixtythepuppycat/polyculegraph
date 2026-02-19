@@ -1,3 +1,11 @@
+FROM node:24-slim AS tailwind
+
+WORKDIR /usr/src
+RUN npm install tailwindcss @tailwindcss/cli flowbite
+
+COPY /static/css/styles.css .
+RUN npx @tailwindcss/cli -i /usr/src/styles.css -o /usr/src/output.css -m
+
 FROM python:3.11
 
 # Install Cloudfared
@@ -15,6 +23,7 @@ RUN apt-get install cloudflared
 # Set CWD & copy files
 WORKDIR /usr/src/app
 COPY . .
+COPY --from=tailwind /usr/src/output.css /usr/src/app/static/css/
 
 # Install requirements
 RUN pip install -r requirements.txt

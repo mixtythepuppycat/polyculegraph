@@ -1,62 +1,8 @@
-.discord_icon {
-    border-radius: 15px;
-    width: 48px;
-    height: 48px;
-    margin-right: 10px ;
-}
-
-#discord_header {
-    display: flex;
-    align-items:center;
-    gap:10px
-}
-
-.graph_name {
-    font-size: 28px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 35px;
-}
-
-.link_container {
-    font-size: 28px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    line-height: 35px;
-    text-decoration: none;
-    color: black;
-    justify-content: center;
-    align-content: center;
-    align-self: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-}
-
-.servers {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.server {
-    background-color:antiquewhite;
-    margin: auto;
-    height: 100px;
-    min-width: 200px;
-    font-size: 28px;
-    font-family: Arial, Helvetica, sans-serif;
-    justify-content: center;
-    align-content: center;
-    align-self: center;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    padding-left: 10px;
-    padding-right: 10px;
-}
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import "flowbite/src/themes/minimal";
+@plugin "flowbite/plugin";
+@source "../../node_modules/flowbite";
 
 .help_img {
     border-radius: 15px;
@@ -65,94 +11,41 @@
     padding-bottom: 10px;
 }
 
-
 .container {
     font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Dropdown Button */
-.dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 5px 16px;
-    border: none;
-    cursor: pointer;
-    min-width: 300px;
-    height: 60px;
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    display:flex;
-    align-items: center;
-    justify-content: left;
-}
-
-/* Dropdown button on hover & focus */
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 300px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;    
-}
-
-/* Links inside the dropdown */
-.dropdown-content .graph_link {
-    color: black;
-    padding: 5px 10px;
-    font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    display:flex;
-    align-items: center;
-    height: 60px;
-    overflow: clip;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content .graph_link:hover {
-    background-color: #ddd;
-}
 
 /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
 .show {
     display:block;
 }
 
-iframe {
-    border: 0px none;
-    width: 100%;
-    height: 100vh;
-}
+.discordLogin {
+    transition: all ease 0.25s;
+    &:hover {
+        transform: scale(1.05);
+    }
+    text-shadow: 0 0.05rem 0.25rem rgba(0, 0, 0, 0.05);
 
-.topbar {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
+    background-color: #5865F2;
+    -webkit-box-shadow: 0px 10px 25px 0px #ffffff80;
+    -moz-box-shadow: 0px 10px 25px 0px #ffffff80;
+    box-shadow: 0px 10px 25px 0px #ffffff80;
 
-.nav {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: space-between;
-}
-
-.title {
-    font-size: 28px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: 700;
-    align-content: center;
+    &:hover {
+        text-shadow: 0 0.15rem 0.50rem rgba(0, 0, 0, 0.15);
+    }
+    .fa-hand-paper{
+        -moz-transform: scale(-1, 1) rotate(45deg);
+        -webkit-transform: scale(-1, 1) rotate(45deg);
+        -o-transform: scale(-1, 1) rotate(45deg);
+        -ms-transform: scale(-1, 1) rotate(45deg);
+        transform: scale(-1, 1) rotate(45deg);
+    }
+    .discordLoginBtn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

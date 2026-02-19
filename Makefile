@@ -19,3 +19,6 @@ docker-build-tag: docker-config.ini
 	docker build -t $(registry)/polyculegraph:$(major_version).$(minor_version).$(patch_version) .
 	docker push $(registry)/polyculegraph:$(major_version).$(minor_version).$(patch_version)
 	
+.PHONY: tailwind
+tailwind:
+	npx @tailwindcss/cli -i ./static/css/styles.css -o ./static/css/output.css --watch

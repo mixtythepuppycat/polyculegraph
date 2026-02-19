@@ -71,9 +71,9 @@ def not_logged_in(current_url):
 
 
 @app.route('/')
-def root():
+def index():
     if not_logged_in('/'):
-            return render_template("root.html",
+            return render_template("index.html",
                            title="Polycule Graph",
                            logged_in=False,
                            version=APP_VERSION)
@@ -88,7 +88,7 @@ def root():
     user_polycules = session['userPolycules']
     found_guilds = [guild for guild in guilds if guild['id'] in user_polycules]
 
-    return render_template("root.html",
+    return render_template("index.html",
                            title="Polycule Graph",
                            guilds=found_guilds,
                            logged_in=True,
@@ -106,6 +106,9 @@ def auth():
     set_token(oauth.discord.authorize_access_token())
     next_url = session.get('next_url')
     session.pop('next_url', None)
+
+    if next_url is None:
+        next_url = "/"
 
     session['user'] = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me').json()['id']
 

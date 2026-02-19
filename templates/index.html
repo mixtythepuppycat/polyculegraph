@@ -1,0 +1,83 @@
+<!-- root.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <nav class="bg-neutral-primary border-default">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <span class="self-center text-xl text-heading font-semibold whitespace-nowrap">Polycule Graph v{{ version }}</span>
+
+            {% if logged_in %}
+
+            <button id="dropdownDefaultButton" data-dropdown-toggle="dropdownOptions" class="inline-flex items-center justify-center text-white bg-[#5865F2] box-border border border-transparent hover:bg-brand-strong focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none" type="button">
+                <span id="dropdownMenuRootText">Select your server</span>
+                <svg class="w-4 h-4 ms-1.5 -me-0.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 9-7 7-7-7"/></svg>
+            </button>
+
+            <div id="dropdownOptions" class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44">
+                <ul class="h-48 p-2 text-sm text-body font-medium overflow-y-auto" aria-labelledby="dropdownDefaultButton">
+                    {% for guild in guilds %}
+                        <li>
+                            <a class="inline-flex items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded" onclick="selectedOption(this, '{{ url_for('.graph', guid=guild['id']) }}')">
+                                <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="rounded-2xl w-12 mr-2.5"> 
+                                {{ guild['name'] }} 
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <script>
+                // set the dropdown menu element
+                const $targetEl = document.getElementById('dropdownOptions');
+
+                // set the element that trigger the dropdown menu on click
+                const $triggerEl = document.getElementById('dropdownDefaultButton');
+
+                const dropdown = new Dropdown($targetEl, $triggerEl);
+
+                function selectedOption(clickedButton, url) {
+                    document.getElementById("graph_view").src = url
+                    document.getElementById("dropdownMenuRootText").innerHTML = clickedButton.innerHTML
+
+                    dropdown.hide()
+                }
+            </script>
+            {% endif %}
+
+            <div class="hidden w-full md:block md:w-auto" id="navbar-default">
+                <ul class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-default rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary">
+                    <li>
+                    <a href="https://ko-fi.com/mixty" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Donate</a>
+                    </li>
+                    <li>
+                    <a href="{{ url_for('.getting_started') }}" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Help</a>
+                    </li>
+                    <li>
+                    <a href="{{ url_for('.logout') }}" class="block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    {% if logged_in %}
+        <iframe id="graph_view" class="border-0 w-full h-dvh"></iframe>
+    {% else %}
+        <section>
+        <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <div>
+                <button class = "discordLogin lg:m-5 md:5 sm:3.5 text-white hover:opacity-75 font-semibold my-2.5 mx-5 px-5 py-1.5 rounded-md place-content-center h-14 width:300px">
+                    <a href="{{ url_for('.login') }}">
+                    <span class="discordLoginBtn">
+                        <i class="fa-brands fa-discord align-middle"></i>
+                        <span class="mx-1.5 align-middle">Login to Discord</span>
+                    </span>
+                    </a>
+                </button>
+            </div>
+        </div>
+        </section>
+    {% endif %}
+{% endblock %}
+

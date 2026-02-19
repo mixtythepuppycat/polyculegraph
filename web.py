@@ -1,6 +1,6 @@
 from flask import Flask, render_template, session, redirect, url_for
 import redis
-from keys import DISCORD_API_BASE_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY
+from keys import DISCORD_API_BASE_URL, OAUTH2_CLIENT_ID, OAUTH2_CLIENT_SECRET, REDIS_HOST, REDIS_PORT, WEB_APP_SECRET_KEY, APP_VERSION
 from polycule import Polycule, Polycules
 from authlib.integrations.flask_client import OAuth
 from flask_session import Session
@@ -87,7 +87,8 @@ def root():
 
     return render_template("root.html",
                            title="Polycule Graph",
-                           guilds=found_guilds)
+                           guilds=found_guilds,
+                           version=APP_VERSION)
 
 
 @app.route('/login')

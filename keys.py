@@ -1,4 +1,5 @@
 from os import getenv
+import os
 
 BOT_TOKEN: str = getenv('BOT_TOKEN')
 URL_HOST: str = getenv('URL_HOST', "http://localhost:5000")
@@ -11,3 +12,8 @@ DATA_FOLDER = getenv('DATA_FOLDER', "graph_data")
 
 REDIS_HOST = getenv('REDIS_HOST', "127.0.0.1")
 REDIS_PORT = getenv('REDIS_PORT', "6379")
+APP_VERSION = ""
+
+if os.path.isfile("VERSION"):
+    with open('VERSION', 'r') as f:
+        APP_VERSION = f.read()

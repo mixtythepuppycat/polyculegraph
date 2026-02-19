@@ -4,19 +4,30 @@
 
 {% block content %}
     <div class="topbar">
-        <div class="dropdown">
-            <button onclick="myFunction()" id="dropbtn" class="dropbtn">Select your server</button>
-            <div id="myDropdown" class="dropdown-content">
-                {% for guild in guilds %}
-                
+        {% if logged_in %}
+            <div class="dropdown">
+                <button onclick="myFunction()" id="dropbtn" class="dropbtn">Select your server</button>
+                <div id="myDropdown" class="dropdown-content">
+                    {% for guild in guilds %}
+                    
 
-                    <div class="graph_link" onclick="selectedOption(this, '{{ url_for('.graph', guid=guild['id']) }}')">
-                        <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="discord_icon"> 
-                        {{ guild['name'] }} 
-                    </div>
-                
-                {% endfor %}
-            </div>
+                        <div class="graph_link" onclick="selectedOption(this, '{{ url_for('.graph', guid=guild['id']) }}')">
+                            <img src="https://cdn.discordapp.com/icons/{{guild['id']}}/{{guild['icon']}}.png" class="discord_icon"> 
+                            {{ guild['name'] }} 
+                        </div>
+                    
+                    {% endfor %}
+                </div>
+        {% else %}
+                <div class="discordLogin">
+                    <button class="discrodLoginButton">
+                        <span>
+                            <i class="fa-brands fa-discord"></i>
+                            <span>Login to Discord</span>
+                        </span>
+                    </button>
+                </div>
+        {% endif %}
         </div>
         <div class="nav">
             <div class="title">Polycule Graph v{{ version }}</div>

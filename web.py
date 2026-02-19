@@ -73,7 +73,10 @@ def not_logged_in(current_url):
 @app.route('/')
 def root():
     if not_logged_in('/'):
-        return redirect(url_for('.login'))
+            return render_template("root.html",
+                           title="Polycule Graph",
+                           logged_in=False,
+                           version=APP_VERSION)
 
     guilds = oauth.discord.get(DISCORD_API_BASE_URL + '/users/@me/guilds').json()
 
@@ -88,6 +91,7 @@ def root():
     return render_template("root.html",
                            title="Polycule Graph",
                            guilds=found_guilds,
+                           logged_in=True,
                            version=APP_VERSION)
 
 

@@ -19,7 +19,6 @@ body:
     id: what-happened-expected
     attributes:
       label: What did you expect to happen?
-      description: Also tell us, what did you expect to happen?
       placeholder: I expected...!
     validations:
       required: true

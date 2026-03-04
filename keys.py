@@ -26,10 +26,10 @@ WEB_APP_SECRET_KEY = getenv('WEB_APP_SECRET_KEY')
 # Folder to store graph data
 DATA_FOLDER = getenv('DATA_FOLDER', "graph_data")
 
-# Reddis host name
+# Redis host name
 REDIS_HOST = getenv('REDIS_HOST', "127.0.0.1")
 
-# Reddis port
+# Redis port
 REDIS_PORT = getenv('REDIS_PORT', "6379")
 
 # Version for displaying in the web app

@@ -32,9 +32,5 @@ REDIS_HOST = getenv('REDIS_HOST', "127.0.0.1")
 # Redis port
 REDIS_PORT = getenv('REDIS_PORT', "6379")
 
-# Version for displaying in the web app
-APP_VERSION = ""
-
-if os.path.isfile("VERSION"):
-    with open('VERSION', 'r') as f:
-        APP_VERSION = f.read()
+# Version for displaying in the web app, gets set as part of the docker build
+APP_VERSION = getenv('APP_VERSION', "LATEST")

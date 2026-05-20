@@ -7,6 +7,8 @@ COPY . .
 RUN npx @tailwindcss/cli -i /usr/src/static/css/styles.css -o /usr/src/output.css -m
 
 FROM python:3.11
+ARG APP_VERSION="LATEST"
+ENV APP_VERSION=$APP_VERSION
 
 # Install Cloudfared
 # Add cloudflare gpg key
